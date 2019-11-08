@@ -17,11 +17,11 @@ using System.Xml;
 namespace Model
 {
     /// <summary>
-    /// This class represents the Element car
+    /// This class represents the Element Car
     /// </summary>
     [LiquidTechnologies.Runtime.Standard20.XmlObjectInfo(LiquidTechnologies.Runtime.Standard20.XmlObjectBase.XmlElementGroupType.Sequence,
                                                     LiquidTechnologies.Runtime.Standard20.XmlObjectBase.XmlElementType.Element,
-                                                    "car", "", true, false, false)]
+                                                    "Car", "", true, false, false)]
     public partial class Car : Model.XmlCommonBase
     {
         #region Constructors
@@ -38,7 +38,7 @@ namespace Model
         /// </remarks>
         public Car()
         {
-            _elementName = "car";
+            _elementName = "Car";
             Init();
         }
         public Car(string elementName)
@@ -63,8 +63,10 @@ namespace Model
         {
             Model.Registration.iRegistrationIndicator = 0; // causes registration to take place
             m_Make = "";
-            m_Model = "";
             m_Color = "";
+            m_IsValidColor = false;
+            m_Owner = "";
+            m_IsValidOwner = false;
 
 // ##HAND_CODED_BLOCK_START ID="Additional Inits"## DO NOT MODIFY ANYTHING OUTSIDE OF THESE TAGS
 
@@ -85,8 +87,10 @@ namespace Model
         {
             Model.Car newObject = new Model.Car(_elementName);
             newObject.m_Make = m_Make;
-            newObject.m_Model = m_Model;
             newObject.m_Color = m_Color;
+            newObject.m_IsValidColor = m_IsValidColor;
+            newObject.m_Owner = m_Owner;
+            newObject.m_IsValidOwner = m_IsValidOwner;
 
 // ##HAND_CODED_BLOCK_START ID="Additional clone"## DO NOT MODIFY ANYTHING OUTSIDE OF THESE TAGS
 
@@ -105,7 +109,7 @@ namespace Model
             get { return ""; }
         }
 
-        #region Attribute - make
+        #region Attribute - Make
         /// <summary>
         /// Represents a mandatory Element in the XML document
         /// </summary>
@@ -114,7 +118,7 @@ namespace Model
         /// It is mandatory and therefore must be populated within the XML.
         /// It is defaulted to "".
         /// </remarks>
-        [LiquidTechnologies.Runtime.Standard20.ElementInfoSeqPrimMnd("make", "", null, LiquidTechnologies.Runtime.Standard20.Conversions.ConversionType.type_string, null, LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.WhitespaceRule.Preserve, "", -1, -1, "", "", "", "", -1, -1, -1, null)]
+        [LiquidTechnologies.Runtime.Standard20.ElementInfoSeqPrimMnd("Make", "", null, LiquidTechnologies.Runtime.Standard20.Conversions.ConversionType.type_string, null, LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.WhitespaceRule.Preserve, "", -1, -1, "", "", "", "", -1, -1, -1, null)]
         public string Make
         {
             get
@@ -132,58 +136,112 @@ namespace Model
 
         #endregion
 
-        #region Attribute - model
+        #region Attribute - Color
         /// <summary>
-        /// Represents a mandatory Element in the XML document
+        /// Represents an optional Element in the XML document
         /// </summary>
         /// <remarks>
         /// This property is represented as an Element in the XML.
-        /// It is mandatory and therefore must be populated within the XML.
-        /// It is defaulted to "".
+        /// It is optional, initially it is not valid.
         /// </remarks>
-        [LiquidTechnologies.Runtime.Standard20.ElementInfoSeqPrimMnd("model", "", null, LiquidTechnologies.Runtime.Standard20.Conversions.ConversionType.type_string, null, LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.WhitespaceRule.Preserve, "", -1, -1, "", "", "", "", -1, -1, -1, null)]
-        public string ModelA
-        {
-            get
-            {
-                return m_Model;
-            }
-            set 
-            {
-                // Apply whitespace rules appropriately
-                value = LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.Preserve(value);
-                m_Model = value;
-            }
-        }
-        protected string m_Model;
-
-        #endregion
-
-        #region Attribute - color
-        /// <summary>
-        /// Represents a mandatory Element in the XML document
-        /// </summary>
-        /// <remarks>
-        /// This property is represented as an Element in the XML.
-        /// It is mandatory and therefore must be populated within the XML.
-        /// It is defaulted to "".
-        /// </remarks>
-        [LiquidTechnologies.Runtime.Standard20.ElementInfoSeqPrimMnd("color", "", null, LiquidTechnologies.Runtime.Standard20.Conversions.ConversionType.type_string, null, LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.WhitespaceRule.Preserve, "", -1, -1, "", "", "", "", -1, -1, -1, null)]
+        [LiquidTechnologies.Runtime.Standard20.ElementInfoSeqPrimOpt("Color", "", "IsValidColor", null, LiquidTechnologies.Runtime.Standard20.Conversions.ConversionType.type_string, null, LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.WhitespaceRule.Preserve, "", -1, -1, "", "", "", "", -1, -1, -1, null)]
         public string Color
         {
-            get
-            {
-                return m_Color;
+            get 
+            { 
+                if (m_IsValidColor == false)
+                    throw new LiquidTechnologies.Runtime.Standard20.LtInvalidStateException("The Property Color is not valid. Set ColorValid = true");
+                return m_Color;  
             }
             set 
-            {
+            { 
                 // Apply whitespace rules appropriately
-                value = LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.Preserve(value);
+                value = LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.Preserve(value); 
+                m_IsValidColor = true;
                 m_Color = value;
             }
         }
+        /// <summary>
+        /// Indicates if Color contains a valid value.
+        /// </summary>
+        /// <remarks>
+        /// true if the value for Color is valid, false if not.
+        /// If this is set to true then the property is considered valid, and assigned its
+        /// default value ("").
+        /// If its set to false then its made invalid, and subsequent calls to get Color
+        /// will raise an exception.
+        /// </remarks>
+        public bool IsValidColor
+        {
+            get
+            {
+                return m_IsValidColor;
+            }
+            set 
+            { 
+                if (value != m_IsValidColor)
+                {
+                    m_Color = "";
+                    m_IsValidColor = value;
+                }
+            }
+        }
+        protected bool m_IsValidColor;
         protected string m_Color;
+        #endregion
 
+        #region Attribute - Owner
+        /// <summary>
+        /// Represents an optional Element in the XML document
+        /// </summary>
+        /// <remarks>
+        /// This property is represented as an Element in the XML.
+        /// It is optional, initially it is not valid.
+        /// </remarks>
+        [LiquidTechnologies.Runtime.Standard20.ElementInfoSeqPrimOpt("Owner", "", "IsValidOwner", null, LiquidTechnologies.Runtime.Standard20.Conversions.ConversionType.type_string, null, LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.WhitespaceRule.Preserve, "", -1, -1, "", "", "", "", -1, -1, -1, null)]
+        public string Owner
+        {
+            get 
+            { 
+                if (m_IsValidOwner == false)
+                    throw new LiquidTechnologies.Runtime.Standard20.LtInvalidStateException("The Property Owner is not valid. Set OwnerValid = true");
+                return m_Owner;  
+            }
+            set 
+            { 
+                // Apply whitespace rules appropriately
+                value = LiquidTechnologies.Runtime.Standard20.WhitespaceUtils.Preserve(value); 
+                m_IsValidOwner = true;
+                m_Owner = value;
+            }
+        }
+        /// <summary>
+        /// Indicates if Owner contains a valid value.
+        /// </summary>
+        /// <remarks>
+        /// true if the value for Owner is valid, false if not.
+        /// If this is set to true then the property is considered valid, and assigned its
+        /// default value ("").
+        /// If its set to false then its made invalid, and subsequent calls to get Owner
+        /// will raise an exception.
+        /// </remarks>
+        public bool IsValidOwner
+        {
+            get
+            {
+                return m_IsValidOwner;
+            }
+            set 
+            { 
+                if (value != m_IsValidOwner)
+                {
+                    m_Owner = "";
+                    m_IsValidOwner = value;
+                }
+            }
+        }
+        protected bool m_IsValidOwner;
+        protected string m_Owner;
         #endregion
 
         #region Attribute - Namespace

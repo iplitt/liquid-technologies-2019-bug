@@ -25,7 +25,7 @@ namespace Model
             _nsMap = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, System.Type>>();
             System.Collections.Generic.Dictionary<string, System.Type> itemMap = null;
             itemMap = new System.Collections.Generic.Dictionary<string, System.Type>();
-            itemMap.Add("car", typeof(Model.Car));
+            itemMap.Add("Car", typeof(Model.Car));
             _nsMap.Add("", itemMap);
         }
         #endregion
